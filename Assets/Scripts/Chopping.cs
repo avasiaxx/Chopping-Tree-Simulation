@@ -1,11 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 public class Chopping : MonoBehaviour
 {
     public GameObject Tree;
-    public Canvas UI;
     public Text TreeText;
     bool Collided = false;
 
@@ -14,23 +12,31 @@ public class Chopping : MonoBehaviour
 
     public Animator anim;
 
-    public float delay = 0f;
+    /// <summary>
+    /// Store Tree Animator
+    /// </summary>
     private void Start()
     {
         anim  = Tree.GetComponent<Animator>();
     }
+    /// <summary>
+    /// If the player is near the tree & they've pressed E play the animation clip
+    /// And wait for the clip to end before setting the Tree to false
+    /// </summary>
     void Update()
     {
         Move();
         if (Input.GetKeyDown(KeyCode.E) && Collided)
         {
-            Debug.Log("E pressed");
             anim.Play("ChopTree");
             StartCoroutine(AfterTreeChop());
             Collided = false;
         }
     }
-
+    /// <summary>
+    /// Waits for the clip to end before setting the Tree to false
+    /// </summary>
+    /// <returns></returns>
     IEnumerator AfterTreeChop()
     {
         yield return new WaitForSeconds(2);
